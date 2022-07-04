@@ -1,0 +1,2 @@
+# GoodLottery
+Good lottery app
