@@ -1,13 +1,10 @@
 package com.samiu.lottery.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,16 +12,33 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.samiu.lottery.data.entiry.AimCode
 import com.samiu.lottery.ui.navigation.Screen
-import com.samiu.lottery.ui.state.AimState
+import com.samiu.lottery.ui.state.AimUIState
 import com.samiu.lottery.ui.theme.Typography
+import com.samiu.lottery.ui.viewmodel.MxnViewModel
+
+@Composable
+fun MainRoute(
+    navController: NavController,
+    viewModel: MxnViewModel = hiltViewModel()
+) {
+    val aimState by viewModel.aimStateFlow.collectAsState()
+    MainScreen(
+        aimState = aimState,
+        onClickHistory = { navController.navigate(Screen.History.router) },
+        onQueryLot = viewModel::queryLottery
+    )
+}
 
 @Composable
 fun MainScreen(
-    navController: NavController,
-    aimState: AimState
+    aimState: AimUIState,
+    onClickHistory: () -> Unit,
+    onQueryLot: (expect: String, aimCode: AimCode) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -38,11 +52,13 @@ fun MainScreen(
                 value = numberText,
                 onValueChange = { numberText = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                label = { Text(text = "彩票号码") },
-                placeholder = { Text(text = "请输入号码") }
+                label = { Text(text = "彩票期号") },
+                placeholder = { Text(text = "请输入期号") }
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = { }) {
+            Button(
+                onClick = { onQueryLot(numberText.text, AimCode.SSQ) }
+            ) {
                 Text(text = "提交")
             }
         }
@@ -55,11 +71,7 @@ fun MainScreen(
         Text(
             text = aimState.time, style = Typography.bodyLarge
         )
-        Button(onClick = {
-            navController.navigate(
-                Screen.History.router
-            )
-        }) {
+        Button(onClick = { onClickHistory() }) {
             Text(text = "历史")
         }
     }
@@ -69,9 +81,8 @@ fun MainScreen(
 @Composable
 fun PreviewMain() {
     MainScreen(
-        navController = rememberNavController(),
-        AimState(
-            openCode = "01,03,06,10,11,29+16", name = "双色球", time = "2018-11-18 21:18:20"
-        )
+        AimUIState(),
+        onQueryLot = { _, _ -> },
+        onClickHistory = {}
     )
 }

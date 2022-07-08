@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.samiu.lottery.ui.navigation.SetupNavGraph
-import com.samiu.lottery.ui.screens.MainScreen
-import com.samiu.lottery.ui.state.AimState
 import com.samiu.lottery.ui.theme.GoodLotteryTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -5,8 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.samiu.lottery.ui.screens.HistoryScreen
+import com.samiu.lottery.ui.screens.MainRoute
 import com.samiu.lottery.ui.screens.MainScreen
-import com.samiu.lottery.ui.state.AimState
+import com.samiu.lottery.ui.state.AimUIState
 
 /**
  * @author samiu
@@ -21,14 +22,7 @@ fun SetupNavGraph(
         startDestination = Screen.Home.router
     ) {
         composable(route = Screen.Home.router) {
-            MainScreen(
-                navController = navController,
-                aimState = AimState(
-                    openCode = "01,03,06,10,11,29+16",
-                    name = "双色球",
-                    time = "2018-11-18 21:18:20"
-                )
-            )
+            MainRoute(navController = navController)
         }
         composable(route = Screen.History.router) {
             HistoryScreen(navController)
