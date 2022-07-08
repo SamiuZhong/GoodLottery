@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.samiu.lottery.ui.component.SsqCompo
 
 /**
  * @author samiu
@@ -28,6 +29,9 @@ fun HistoryScreen(
         }) {
             Text(text = "返回")
         }
+        val redList = listOf("01", "02", "06", "12", "16", "26")
+        val blue = "09"
+        SsqCompo(redCodeList = redList, blueCode = blue)
     }
 }
 
